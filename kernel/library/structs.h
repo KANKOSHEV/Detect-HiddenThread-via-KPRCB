@@ -86,7 +86,11 @@ typedef struct _KPRCB_META
 	struct _KTHREAD* IdleThread; //0x0018 
 } KPRCB_META, *PKPRCB_META;
 
-PVOID ke_get_current_prcb_address = 0;
+__forceinline PKPRCB_META KeGetCurrentPrcb()
+{
+	return (PKPRCB_META)__readgsqword(FIELD_OFFSET(KPCR, CurrentPrcb));
+}
+
 #define make_ptr(ptr, offset) ((uintptr_t)(ptr) + (uintptr_t)(offset))
 
 extern "C"
