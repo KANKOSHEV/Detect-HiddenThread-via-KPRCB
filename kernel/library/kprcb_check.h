@@ -3,14 +3,9 @@
 #define ThreadListHead 0x5E0 // EPROCESS::ThreadListHead
 #define ThreadListEntryK 0x2F8 // KTHREAD::ThreadListEntry
 
-PKPRCB_META ke_get_current_prcb()
-{	
-	return reinterpret_cast<PKPRCB_META(*)()>(ke_get_current_prcb_address)();
-}
-
 void hidden_system_threads_detect()
 {	
-	PKPRCB_META prcb = ke_get_current_prcb();
+	PKPRCB_META prcb = KeGetCurrentPrcb();
 	PKTHREAD current_thread = prcb->CurrentThread;
 	LIST_ENTRY* thread_list_entry = (LIST_ENTRY*)make_ptr(current_thread, ThreadListEntryK);
 	PLIST_ENTRY list_entry = thread_list_entry;
